@@ -11,52 +11,22 @@ import sys
 import signal
 from concurrent.futures import ThreadPoolExecutor, as_completed
 os.system('cls')
-User = str(input(Fore.LIGHTMAGENTA_EX+"Username: "))
+User = str(input(Fore.CYAN+"Username: ")
 os.system('cls')
 class LutionCounter:
     Purchased = 0
     OutofStock = 0
-def stert():
-    set_title(f"MR Lution | User: {User} | Status: Selecting")
-    text ="""
-    ███▄ ▄███▓ ██▀███      ██▓     █    ██ ▄▄▄█████▓ ██▓ ▒█████   ███▄    █ 
-    ▓██▒▀█▀ ██▒▓██ ▒ ██▒   ▓██▒     ██  ▓██▒▓  ██▒ ▓▒▓██▒▒██▒  ██▒ ██ ▀█   █ 
-    ▓██    ▓██░▓██ ░▄█ ▒   ▒██░    ▓██  ▒██░▒ ▓██░ ▒░▒██▒▒██░  ██▒▓██  ▀█ ██▒
-    ▒██    ▒██ ▒██▀▀█▄     ▒██░    ▓▓█  ░██░░ ▓██▓ ░ ░██░▒██   ██░▓██▒  ▐▌██▒
-    ▒██▒   ░██▒░██▓ ▒██▒   ░██████▒▒▒█████▓   ▒██▒ ░ ░██░░ ████▓▒░▒██░   ▓██░
-    ░ ▒░   ░  ░░ ▒▓ ░▒▓░   ░ ▒░▓  ░░▒▓▒ ▒ ▒   ▒ ░░   ░▓  ░ ▒░▒░▒░ ░ ▒░   ▒ ▒ 
-    ░  ░      ░  ░▒ ░ ▒░   ░ ░ ▒  ░░░▒░ ░ ░     ░     ▒ ░  ░ ▒ ▒░ ░ ░░   ░ ▒░
-    ░      ░     ░░   ░      ░ ░    ░░░ ░ ░   ░       ▒ ░░ ░ ░ ▒     ░   ░ ░ 
-    ░      ░            ░  ░   ░               ░      ░ ░           ░ 
-                                                                                """
-    print(Fore.RED+text)
-    print("")
-    print("")
-    print("")
-    print("")
-    print("")
-api_key = #"Your API Key"
-def starting():
-    stert()
-    print(Fore.CYAN+"[!] Options: ")
-    print("")
-    print(Fore.GREEN+"[1] User Information")
-    print(Fore.GREEN+"[2] Purchase Email")
-    print(Fore.GREEN+"[3] Recharge Lution")
-    print(Fore.GREEN+"[4] Exit")
-    print("")
 
 def getuser(api_key, User):
     
     userapi = f"http://api.lution.ee/auth/me?apikey={api_key}"
     response = requests.get(userapi)
     json_data = response.json()
-    set_title(f"MR Lution | User: {User} |Checking Userinfo | Email: {json_data['email']} | Balance: {json_data['balance']}")
-    print("Email: " + json_data['email'])
-    print("Balance: " + str(json_data['balance']))
+    set_title(f"MR Lution | User: {User} | Checking Userinfo | Email: {json_data['email']} | Balance: {json_data['balance']}")
+    print(Fore.GREEN+"Email: " + json_data['email'])
+    print(Fore.GREEN+"Balance: " + str(json_data['balance']))
     input("")
-    
-    os.system('start.bat')
+    starting()
 
 def purchasemail(api_key, User):
     mailcode = "HOTMAIL"
@@ -98,8 +68,9 @@ def purchasemail(api_key, User):
         with open('accs.txt', 'w') as text_file:
             for account in accounts:
                 text_file.write(f"{account['Email']}:{account['Password']}:{account['AccessToken']}\n")
-        print(Fore.GREEN+f"PURCHASED: {account['Email']}:{account['Password']}\n")
-
+        set_title(f"MR Lution | User: {User} | Status: Purchasing | Purchased: {LutionCounter.Purchased} | OutofStock: {LutionCounter.OutofStock}")
+        print(Fore.GREEN+f"PURCHASED: {account['Email']}:{account['Password']}")
+        
     def purchase_task():
         purchased_accounts = purchase_email()
         if purchased_accounts:
@@ -108,17 +79,16 @@ def purchasemail(api_key, User):
 
     def main():
         signal.signal(signal.SIGINT, signal_handler)
-        total_accounts = int(input("Enter the total number of emails to purchase: "))
-        thread_count = int(input("Enter the number of threads to use: "))
-        
+        total_accounts = int(input(Fore.YELLOW+"[!] Amount of Email: "))
+        thread_count = int(input(Fore.LIGHTCYAN_EX+"[!] Threads: "))
+        print("")
         with ThreadPoolExecutor(max_workers=thread_count) as executor:
             futures = [executor.submit(purchase_task) for _ in range(total_accounts)]
             for future in as_completed(futures):
                 future.result()
 
     main()
-    while True:
-        set_title(f"MR Lution |  User: {User} | Status: Purchasing | Purchased: {LutionCounter.Purchased} | OutofStock: {LutionCounter.OutofStock}")
+        
 def recharge_lution(api_key, User):
     amount = int(input("Amount: "))
     set_title(f"MR Lution | User: {User} | Status: Recharging | Amount: ${amount} | User: {User}")
@@ -147,8 +117,8 @@ def recharge_lution(api_key, User):
     else:
         print(f"Error: {response.status_code} - {response.text}")
     input("")
-if __name__ == "__main__":
     starting()
+def quill(api_key, User):
     ins = input(Fore.YELLOW+"[?] Option: ")
     if ins == "1":
         stert()
@@ -164,3 +134,37 @@ if __name__ == "__main__":
         time.sleep(3)
         print(Fore.RED+"Quitting in 3 seconds .........")
         quit()
+def stert():
+    os.system('cls')
+    set_title(f"MR Lution | User: {User} | Status: Selecting")
+    text ="""
+    ███▄ ▄███▓ ██▀███      ██▓     █    ██ ▄▄▄█████▓ ██▓ ▒█████   ███▄    █ 
+    ▓██▒▀█▀ ██▒▓██ ▒ ██▒   ▓██▒     ██  ▓██▒▓  ██▒ ▓▒▓██▒▒██▒  ██▒ ██ ▀█   █ 
+    ▓██    ▓██░▓██ ░▄█ ▒   ▒██░    ▓██  ▒██░▒ ▓██░ ▒░▒██▒▒██░  ██▒▓██  ▀█ ██▒
+    ▒██    ▒██ ▒██▀▀█▄     ▒██░    ▓▓█  ░██░░ ▓██▓ ░ ░██░▒██   ██░▓██▒  ▐▌██▒
+    ▒██▒   ░██▒░██▓ ▒██▒   ░██████▒▒▒█████▓   ▒██▒ ░ ░██░░ ████▓▒░▒██░   ▓██░
+    ░ ▒░   ░  ░░ ▒▓ ░▒▓░   ░ ▒░▓  ░░▒▓▒ ▒ ▒   ▒ ░░   ░▓  ░ ▒░▒░▒░ ░ ▒░   ▒ ▒ 
+    ░  ░      ░  ░▒ ░ ▒░   ░ ░ ▒  ░░░▒░ ░ ░     ░     ▒ ░  ░ ▒ ▒░ ░ ░░   ░ ▒░
+    ░      ░     ░░   ░      ░ ░    ░░░ ░ ░   ░       ▒ ░░ ░ ░ ▒     ░   ░ ░ 
+    ░      ░            ░  ░   ░               ░      ░ ░           ░ 
+                                                                                """
+    print(Fore.RED+text)
+    print("")
+    print("")
+    print("")
+    print("")
+    print("")
+api_key = "API"
+
+def starting():
+    stert()
+    print(Fore.CYAN+"[!] Options: ")
+    print("")
+    print(Fore.GREEN+"[1] User Information")
+    print(Fore.GREEN+"[2] Purchase Email")
+    print(Fore.GREEN+"[3] Recharge Lution")
+    print(Fore.GREEN+"[4] Exit")
+    print("")
+    quill(api_key, User)
+if __name__ == "__main__":
+    starting()
